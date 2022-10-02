@@ -4,20 +4,15 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 
 const App: React.FunctionComponent = () => {
+  const [color, setColor] = useState("");
   const [userCorrect, setUserCorrect] = useState(false);
-  const [correctIndex, setCorrectIndex] = useState(0);
+  const [colorArray, setColorArray] = useState<string[]>([]);
 
   useEffect(() => {
-    generateArray();
-    setCorrectIndex(Math.floor(Math.random() * 3));
-    console.log("the correct answer is ", correctIndex);
+    const correctColor = generateColor();
+    setColor(correctColor);
+    setColorArray([correctColor, generateColor(), generateColor()].sort());
   }, []);
-
-  const [colorArray, setColorArray] = useState({
-    0: "",
-    1: "",
-    2: "",
-  });
 
   const generateColor = (): string => {
     const DEC_TO_HEX = [
@@ -49,82 +44,41 @@ const App: React.FunctionComponent = () => {
     return `#${color}`;
   };
 
-  const generateArray = (): void => {
-    const map1 = new Map();
-    for (let ctr = 0; ctr < 3; ctr++) {
-      const newColor = generateColor();
-
-      if (map1.has(newColor)) {
-        continue;
-      }
-
-      map1.set(ctr, newColor);
-    }
-
-    const newObject: any = {};
-    map1.forEach((value, key) => {
-      newObject[key] = value;
-    });
-
-    setColorArray(newObject);
-  };
-
-  const handleClick = (index: number): void => {
-    console.log("Index", index);
-    console.log("correctindex", correctIndex);
-
-    if (index === correctIndex) {
+  const handleClick = (index: string): void => {
+    if (index === color) {
       setUserCorrect(true);
-      generateArray();
+
+      const correctColor = generateColor();
+      setColor(correctColor);
+      setColorArray([correctColor, generateColor(), generateColor()].sort());
     } else {
       setUserCorrect(false);
     }
   };
-
-  // populat colorArray
 
   return (
     <div className="App">
       <div
         className="mainBox"
         style={{
-          background:
-            colorArray[
-              correctIndex as keyof {
-                0: "";
-                1: "";
-                2: "";
-              }
-            ],
+          background: color,
         }}
       ></div>
       <div className="buttonContainer">
-        <div>
-          The correct collor is{" "}
-          {
-            colorArray[
-              correctIndex as keyof {
-                0: "";
-                1: "";
-                2: "";
-              }
-            ]
-          }
-        </div>
-        <button onClick={() => handleClick(0)}>
-          {Object.values(colorArray)[0]}
-        </button>
-        <button onClick={() => handleClick(1)}>
-          {Object.values(colorArray)[1]}
-        </button>
-        <button onClick={() => handleClick(2)}>
-          {Object.values(colorArray)[2]}
-        </button>
+        <div>The correct color is {color}</div>
+
+        {colorArray.map((colorValue) => {
+          return (
+            <button key={colorValue} onClick={() => handleClick(colorValue)}>
+              {colorValue}
+            </button>
+          );
+        })}
       </div>
       {userCorrect ? (
-        <div>Your previous answer wasCorrect</div>
+        <div className="correct">Your previous answer was Correct</div>
       ) : (
-        <div>Your previous answer Wrong</div>
+        <div className="wrong">Your previous answer was Wrong</div>
       )}
     </div>
   );
