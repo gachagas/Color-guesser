@@ -3,25 +3,6 @@ import React, { useState, useEffect } from "react";
 
 import "./App.css";
 
-const DEC_TO_HEX = {
-  0: "0",
-  1: "1",
-  2: "2",
-  3: "3",
-  4: "4",
-  5: "5",
-  6: "6",
-  7: "7",
-  8: "8",
-  9: "9",
-  10: "A",
-  11: "B",
-  12: "C",
-  13: "D",
-  14: "E",
-  15: "F",
-};
-
 const App: React.FunctionComponent = () => {
   const [userCorrect, setUserCorrect] = useState(false);
   const [correctIndex, setCorrectIndex] = useState(0);
@@ -39,14 +20,33 @@ const App: React.FunctionComponent = () => {
   });
 
   const generateColor = (): string => {
-    let randomDec;
-    let ret = "#";
-    for (let ctr = 0; ctr < 6; ctr++) {
-      randomDec = Math.floor(Math.random() * 16);
-      ret = ret.concat(Object.values(DEC_TO_HEX)[randomDec]);
-    }
-    // console.log(ret);
-    return ret;
+    const DEC_TO_HEX = [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+    ];
+
+    const color = new Array(6)
+      .fill("0")
+      .map(() => {
+        return DEC_TO_HEX[Math.floor(Math.random() * 16)];
+      })
+      .join("");
+
+    return `#${color}`;
   };
 
   const generateArray = (): void => {
