@@ -8,10 +8,14 @@ const App: React.FunctionComponent = () => {
   const [userCorrect, setUserCorrect] = useState(false);
   const [colorArray, setColorArray] = useState<string[]>([]);
 
-  useEffect(() => {
+  const generateNewColors = (): void => {
     const correctColor = generateColor();
     setColor(correctColor);
     setColorArray([correctColor, generateColor(), generateColor()].sort());
+  };
+
+  useEffect(() => {
+    generateNewColors();
   }, []);
 
   const generateColor = (): string => {
@@ -47,10 +51,7 @@ const App: React.FunctionComponent = () => {
   const handleClick = (index: string): void => {
     if (index === color) {
       setUserCorrect(true);
-
-      const correctColor = generateColor();
-      setColor(correctColor);
-      setColorArray([correctColor, generateColor(), generateColor()].sort());
+      generateNewColors();
     } else {
       setUserCorrect(false);
     }
