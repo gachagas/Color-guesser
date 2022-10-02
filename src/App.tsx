@@ -5,7 +5,9 @@ import "./App.css";
 
 const App: React.FunctionComponent = () => {
   const [color, setColor] = useState("");
-  const [userCorrect, setUserCorrect] = useState<boolean | undefined>(false);
+  const [userCorrect, setUserCorrect] = useState<boolean | undefined>(
+    undefined
+  );
   const [colorArray, setColorArray] = useState<string[]>([]);
 
   const generateNewColors = (): void => {
@@ -76,9 +78,10 @@ const App: React.FunctionComponent = () => {
           );
         })}
       </div>
-      {userCorrect ? (
+      {userCorrect === true && (
         <div className="correct">Your previous answer was Correct</div>
-      ) : (
+      )}
+      {userCorrect === false && (
         <div className="wrong">Your previous answer was Wrong</div>
       )}
     </div>
