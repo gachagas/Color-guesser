@@ -5,7 +5,7 @@ import "./App.css";
 
 const App: React.FunctionComponent = () => {
   const [color, setColor] = useState("");
-  const [userCorrect, setUserCorrect] = useState(false);
+  const [userCorrect, setUserCorrect] = useState<boolean | undefined>(false);
   const [colorArray, setColorArray] = useState<string[]>([]);
 
   const generateNewColors = (): void => {
